@@ -7,6 +7,15 @@ This component is a web service built with Flask that receives a sentence in tex
 
 This component is built to run in a Docker container (see `Dockerfile`).
 
+## Testing
+
+To test the component within the pipeline, you can use the following commands:
+
+```bash
+docker build -t text2text-translation .
+docker run -v ${PWD}/model:/model --name signon_wp4_mt -p 5001:5001 text2text-translation
+```
+
 # LICENSE
 
 This code is licensed under the Apache License, Version 2.0 (LICENSE or http://www.apache.org/licenses/LICENSE-2.0).
