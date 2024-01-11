@@ -17,9 +17,11 @@ def translate_sentence(
     tokeniser.src_lang = src_lang
     item = tokeniser(txt, add_special_tokens=True)
     with torch.no_grad():
+        if args.use_cuda:
+            item = {k: v.cuda() if v is not None else v for k,v in item.items()}
         generated_tokens = accelerator.unwrap_model(model.model).generate(
-            torch.as_tensor([item['input_ids']]).cuda(), 
-            attention_mask=torch.as_tensor([item['attention_mask']]).cuda(), 
+            torch.as_tensor([item['input_ids']]), 
+            attention_mask=torch.as_tensor([item['attention_mask']]), 
             num_beams=args.num_beams,
             decoder_start_token_id=decoder_start_token_id
         ) 
@@ -27,3 +29,4 @@ def translate_sentence(
         generated_tokens, skip_special_tokens=True
     )
     return translation
+

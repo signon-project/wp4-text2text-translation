@@ -1,4 +1,5 @@
 {
+    "use_cuda": false,
     "seed": 222,
     "time_zone": "Europe/Madrid",
 

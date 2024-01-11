@@ -1,8 +1,10 @@
 # syntax=docker/dockerfile:1
-#FROM python:3.6.8 
-FROM ansonxing168/sentencepiece
+FROM python:3.8 
+#ansonxing168/sentencepiece
+#FROM huahua123ldh/pytorch:gpu-1.2-torchtext-sp-tsfm
+#FROM huggingface/transformers-tensorflow-gpu
 COPY requirements.txt .
-VOLUME /model
+#VOLUME /model
 #RUN wget https://github.com/google/sentencepiece.git
 #RUN apt-get install cmake build-essential pkg-config libgoogle-perftools-dev
 #RUN cd sentencepiece
@@ -12,6 +14,6 @@ VOLUME /model
 #RUN make -j $(nproc)
 #RUN sudo make install
 #RUN sudo ldconfig -v
-CMD pip install -r requirements.txt
+RUN pip install -r requirements.txt --no-cache-dir
 COPY src/ . 
 CMD [ "python", "./mt_server.py", "args.json" ]

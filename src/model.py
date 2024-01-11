@@ -1,5 +1,6 @@
 import os
 import torch
+
 from transformers import (
     MBartForConditionalGeneration,
     MBartConfig,
@@ -180,13 +181,18 @@ class MultilingualModel:
         # If the model has not been previously loaded
         if self.model is None:
             try:
-                self.model = torch.load(path + 'model.pt')
+                if self.args.use_cuda:
+                    self.model = torch.load(path + 'model.pt')
+                else:
+                    print('PATH', path)
+                    self.model = MBartForConditionalGeneration.from_pretrained(path)
+                    #self.model = torch.load(path + 'model.pt', map_location='cpu')
             except FileNotFoundError:
                 print('Cannot load model {}, does it exist? '.format(
                     path + 'model.pt'
                 ))
                 raise
-
+        
         # Resizes the model embedding matrix according to the tokeniser's
         # vocabulary
         self.model.resize_token_embeddings(len(self.tokeniser))
@@ -209,7 +215,7 @@ class MultilingualModel:
                 self.model, device_ids=[rank], output_device=rank
             )
         else:
-            self.model = self.model.cuda()
+            if self.args.use_cuda: self.model = self.model.cuda()
 
     def _custom_transformer(self) -> None:
         """ 
