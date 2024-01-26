@@ -7,6 +7,8 @@ This component is a web service built with Flask that receives a sentence in tex
 
 This component is built to run in a Docker container (see `Dockerfile`).
 
+The model checkpoint is available in https://huggingface.co/signon-project/text-to-text-translator. The best.ckpt checkpoint must be included in the src/model/ folder.
+
 ## Testing
 
 To test the component within the pipeline, you can use the following commands:
